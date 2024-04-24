@@ -34,12 +34,12 @@ class CuboMagico:
      
     def horizontal_twist(self, row, direction):
         if row < len(self.cube[0]):
-            if direction == 0:#girar a esquerda
+            if direction == 0:#girar a direita
                 self.cube[1][row], self.cube[2][row], self.cube[3][row], self.cube[4][row] = (self.cube[2][row],
                                                                                               self.cube[3][row],
                                                                                               self.cube[4][row],
                                                                                               self.cube[1][row])
-            elif direction == 1:
+            elif direction == 1:#girar a esquerda
                 self.cube[1][row], self.cube[2][row], self.cube[3][row], self.cube[4][row] = (self.cube[4][row],
                                                                                               self.cube[1][row],
                                                                                               self.cube[2][row],
@@ -60,3 +60,18 @@ class CuboMagico:
         else:
             print(f'ERROR - desired row outside of rubiks cube range. Please select a row between 0-{len(self.cube[0])-1}')
             return
+    def vertical_twist(self, column, direction):
+        if column < len(self.cube):
+            if direction == 1: #girar para baixo
+                self.cube[0][column], self.cube[2][column], self.cube[4][column], self.cube[5][column] = (self.cube[2][column],
+                                                                                                          self.cube[4][column],
+                                                                                                          self.cube[5][column],
+                                                                                                          self.cube[0][column])
+            elif direction == 0:
+                self.cube[0][column], self.cube[2][column], self.cube[4][column], self.cube[5][column] = (self.cube[5][column],
+                                                                                                          self.cube[0][column],
+                                                                                                          self.cube[2][column],
+                                                                                                          self.cube[4][column])
+            else:
+                print(f'ERROR - desired column outside of rubiks cube range. Please select a column between 0-{len(self.cube[0]-1)}')
+    
