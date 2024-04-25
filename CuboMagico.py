@@ -2,32 +2,32 @@ class CuboMagico:
     cube = [
                 [
                     [0, 0, 0], [0, 0, 1], [0, 0, 2],
-                    [0, 1, 0], [0, 1, 1], [0, 1, 2],#topo(branco)
+                    [0, 1, 0], [0, 1, 1], [0, 1, 2],#topo(branco)[0]
                     [0, 2, 0], [0, 2, 1], [0, 2, 2]
                     ],
                     
                 [   [1, 0, 0], [1, 0, 1], [1, 0, 2],
-                    [1, 1, 0], [1, 1, 1], [1, 1, 2],#esquerda(laranja)
+                    [1, 1, 0], [1, 1, 1], [1, 1, 2],#esquerda(laranja)[1]
                     [1, 2, 0], [1, 2, 1], [1, 2, 2]
                     ],
                     
                 [   [2, 0, 0], [2, 0, 1], [2, 0, 2],
-                    [2, 1, 0], [2, 1, 1], [2, 1, 2],#frente(verde)
+                    [2, 1, 0], [2, 1, 1], [2, 1, 2],#frente(verde)[2]
                     [2, 2, 0], [2, 2, 1], [2, 2, 2]
                     ],
                     
                 [   [3, 0, 0], [3, 0, 1], [3, 0, 2],
-                    [3, 1, 0], [3, 1, 1], [3, 1, 2],#direita(vermelho)
+                    [3, 1, 0], [3, 1, 1], [3, 1, 2],#direita(vermelho)[3]
                     [3, 2, 0], [3, 2, 1], [3, 2, 2]
                     ],
                     
                 [   [4, 0, 0], [4, 0, 1], [4, 0, 2],
-                    [4, 1, 0], [4, 1, 1], [4, 1, 2],#costas(azul)
+                    [4, 1, 0], [4, 1, 1], [4, 1, 2],#costas(azul)[4]
                     [4, 2, 0], [4, 2, 1], [4, 2, 2]
                     ],
                     
                 [   [5, 0, 0], [5, 0, 1], [5, 0, 2],
-                    [5, 1, 0], [5, 1, 1], [5, 1, 2],#fundo(amarelo)
+                    [5, 1, 0], [5, 1, 1], [5, 1, 2],#fundo(amarelo)[5]
                     [5, 2, 0], [5, 2, 1], [5, 2, 2]
                     ]
             ]
@@ -86,4 +86,29 @@ class CuboMagico:
                     self.cube[3] = [list(x) for z in zip(*self.cube[3])][::-1]#transpose right
         else:
             print(f'ERROR - desired column outside of rubiks cube range. Please select a column between 0-{len(self.cube[0]-1)}')
-    
+    def transversal_twist(self, row, direction):
+        if row < len(self.cube):
+            if direction == 1:#girar direita
+                self.cube[0][row], self.cube[3][row], self.cube[5][row], self.cube[1][row] = (self.cube[3][row],
+                                                                                              self.cube[5][row],
+                                                                                              self.cube[1][row],
+                                                                                              self.cube[0][row])
+            elif direction == 0:#girar esquerda
+                self.cube[1][row], self.cube[5][row], self.cube[3][row], self.cube[0][row] = (self.cube[5][row],
+                                                                                              self.cube[3][row],
+                                                                                              self.cube[0][row],
+                                                                                              self.cube[1][row])
+            else:
+                print('Error - direction must be 0(right) or 1(left)')
+            if direction == 0:#girar direita
+                if row == 0:
+                    self.cube[2] = [list(x) for x in zip(*reversed(self.cube[2]))]#transpose front
+                elif row == len(self.cube[0]) - 1:
+                    self.cube[4] = [list(x) for x in zip(*reversed(self.cube[4]))] #Transpose back
+            elif direction == 1: #girar esquerda
+                if row == 0:
+                    self.cube[2] = [list(x) for x in zip(*self.cube[2])][::-1] #Transpose front
+                elif row == len(self.cube[0]) - 1:
+                    self.cube[4] = [list(x) for x in zip(*self.cube[4])][::-1] #Transpose back
+        else:
+            print(f'ERROR - desired row outside of rubiks cube range. Please select a row between 0-{len(self.cube[0] - 1)}')
