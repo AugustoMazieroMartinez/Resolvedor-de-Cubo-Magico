@@ -45,14 +45,14 @@ class CuboMagico:
                                                                                               self.cube[2][row],
                                                                                               self.cube[3][row])
             else:
-                print(f'Error - direction must be 0 (left) or 1 (right)')
+                print(f'Error - direction must be 0 (rght) or 1 (left)')
                 return
-            if direction == 0:
+            if direction == 0:#girar direita
                 if row == 0:
-                    self.cube[0] = [list(x) for x in zip(*reversed(self.cube[0]))]
+                    self.cube[0] = [list(x) for x in zip(*reversed(self.cube[0]))]#transpose top
                 elif row == len(self.cube[0]) - 1:
                     self.cube[5] = [list(x) for x in zip(*reversed(self.cube[5]))] #Transpose bottom
-            elif direction == 1: #Twist right
+            elif direction == 1: #girar esquerda
                 if row == 0:
                     self.cube[0] = [list(x) for x in zip(*self.cube[0])][::-1] #Transpose top
                 elif row == len(self.cube[0]) - 1:
@@ -73,5 +73,17 @@ class CuboMagico:
                                                                                                           self.cube[2][column],
                                                                                                           self.cube[4][column])
             else:
-                print(f'ERROR - desired column outside of rubiks cube range. Please select a column between 0-{len(self.cube[0]-1)}')
+                print('Error - direction must be 0(up) or 1(down)')
+            if direction == 0:
+                if column == 0:
+                    self.cube[1] = [list(x) for x in zip(*reversed(self.cube[1]))]#transpose left
+                elif column == len(self.cube[0]) - 1:
+                    self.cube[3] = [list(x) for x in zip(*reversed(self.cube[3]))]#transpose right
+            if direction == 0:
+                if column == 0:
+                    self.cube[1] = [list(x) for x in zip(*self.cube[1])][::-1]#transpose left
+                if column == len(self.cube[0]) - 1:
+                    self.cube[3] = [list(x) for z in zip(*self.cube[3])][::-1]#transpose right
+        else:
+            print(f'ERROR - desired column outside of rubiks cube range. Please select a column between 0-{len(self.cube[0]-1)}')
     
