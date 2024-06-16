@@ -1,45 +1,49 @@
-class CuboMagico:
-    cube = [
-                [
-                    [0, 0, 0], [0, 0, 1], [0, 0, 2],
-                    [0, 1, 0], [0, 1, 1], [0, 1, 2],#topo(branco)[0]
-                    [0, 2, 0], [0, 2, 1], [0, 2, 2]
-                    ],
-                    
-                [   [1, 0, 0], [1, 0, 1], [1, 0, 2],
-                    [1, 1, 0], [1, 1, 1], [1, 1, 2],#esquerda(laranja)[1]
-                    [1, 2, 0], [1, 2, 1], [1, 2, 2]
-                    ],
-                    
-                [   [2, 0, 0], [2, 0, 1], [2, 0, 2],
-                    [2, 1, 0], [2, 1, 1], [2, 1, 2],#frente(verde)[2]
-                    [2, 2, 0], [2, 2, 1], [2, 2, 2]
-                    ],
-                    
-                [   [3, 0, 0], [3, 0, 1], [3, 0, 2],
-                    [3, 1, 0], [3, 1, 1], [3, 1, 2],#direita(vermelho)[3]
-                    [3, 2, 0], [3, 2, 1], [3, 2, 2]
-                    ],
-                    
-                [   [4, 0, 0], [4, 0, 1], [4, 0, 2],
-                    [4, 1, 0], [4, 1, 1], [4, 1, 2],#costas(azul)[4]
-                    [4, 2, 0], [4, 2, 1], [4, 2, 2]
-                    ],
-                    
-                [   [5, 0, 0], [5, 0, 1], [5, 0, 2],
-                    [5, 1, 0], [5, 1, 1], [5, 1, 2],#fundo(amarelo)[5]
-                    [5, 2, 0], [5, 2, 1], [5, 2, 2]
-                    ]
-            ]
-     
+from random import randint, choice
+class Cubo:
+    def __init__(self, n = 3, cores = ['w', 'o', 'g', 'r', 'b', 'y'], state = None):
+        if state is None: 
+            self.n = n
+            self.cores = cores
+            self.reset()
+        else:
+            self.n = int(len(state) / 6 ** (.5))
+            self.cores = []
+            self.cubo = [[[]]]
+            for i, s in enumerate(state):
+                if s not in self.cores: self.cores.append(s)
+                self.cubo[-1][-1].append(s)
+                if len(self.cubo[-1][-1]) == self.n and len(self.cubo[-1]) < self.n:
+                    self.cubo[-1].append([])
+                elif len(self.cubo[-1][-1]) == self.n and len(self.cubo[-1]) == self.n and i < len(state) - 1:
+                    self.cubo.append([[]])
+    def reset(self):
+        self.cubo = [[[c for x in range(self.n)] for y in range(self.n)] for c in self.cores]
+
+    def resolvido(self):
+        for lado in self.cubo:
+            hold = []
+            check = True
+            for linha in lado:
+                if len(set(linha)) == 1:
+                    hold.append(linha[0])
+                else:
+                    verifica = False
+                    break
+            if verifica == False:
+                break
+            if len(set(hold)) > 1:
+                verifica = False
+                break
+        return verifica
+
     def horizontal_twist(self, row, direction):
         if row < len(self.cube[0]):
-            if direction == 0:#girar a direita
+            if direction == 0:#girar a esquerda
                 self.cube[1][row], self.cube[2][row], self.cube[3][row], self.cube[4][row] = (self.cube[2][row],
                                                                                               self.cube[3][row],
                                                                                               self.cube[4][row],
                                                                                               self.cube[1][row])
-            elif direction == 1:#girar a esquerda
+            elif direction == 1:#girar a direita
                 self.cube[1][row], self.cube[2][row], self.cube[3][row], self.cube[4][row] = (self.cube[4][row],
                                                                                               self.cube[1][row],
                                                                                               self.cube[2][row],
@@ -47,16 +51,16 @@ class CuboMagico:
             else:
                 print(f'Error - direction must be 0 (rght) or 1 (left)')
                 return
-            if direction == 0:#girar direita
+            if direction == 0:#girar esquerda
                 if row == 0:
-                    self.cube[0] = [list(x) for x in zip(*reversed(self.cube[0]))]#transpose top
+                    self.cube[0] = [list(x) for x in zip(*reversed(self.cube[0]))]#Transpões o topo
                 elif row == len(self.cube[0]) - 1:
-                    self.cube[5] = [list(x) for x in zip(*reversed(self.cube[5]))] #Transpose bottom
-            elif direction == 1: #girar esquerda
+                    self.cube[5] = [list(x) for x in zip(*reversed(self.cube[5]))] #Transpões o fundo
+            elif direction == 1: #girardireita
                 if row == 0:
-                    self.cube[0] = [list(x) for x in zip(*self.cube[0])][::-1] #Transpose top
+                    self.cube[0] = [list(x) for x in zip(*self.cube[0])][::-1] #Transpões o topo
                 elif row == len(self.cube[0]) - 1:
-                    self.cube[5] = [list(x) for x in zip(*self.cube[5])][::-1] #Transpose bottom
+                    self.cube[5] = [list(x) for x in zip(*self.cube[5])][::-1] #Transpões o fundo
         else:
             print(f'ERROR - desired row outside of rubiks cube range. Please select a row between 0-{len(self.cube[0])-1}')
             return
@@ -74,19 +78,19 @@ class CuboMagico:
                                                                                                           self.cube[4][column])
             else:
                 print('Error - direction must be 0(up) or 1(down)')
-            if direction == 0:
+            if direction == 0: #gira para baixo
                 if column == 0:
-                    self.cube[1] = [list(x) for x in zip(*reversed(self.cube[1]))]#transpose left
+                    self.cube[1] = [list(x) for x in zip(*reversed(self.cube[1]))][::-1]#Transpõe para esquerda
                 elif column == len(self.cube[0]) - 1:
-                    self.cube[3] = [list(x) for x in zip(*reversed(self.cube[3]))]#transpose right
-            if direction == 0:
+                    self.cube[3] = [list(x) for x in zip(*reversed(self.cube[3]))][::-1]#Transpõe para direita
+            if direction == 1: #gira para cima
                 if column == 0:
-                    self.cube[1] = [list(x) for x in zip(*self.cube[1])][::-1]#transpose left
+                    self.cube[1] = [list(x) for x in zip(*self.cube[1])]#Transpõe para esquerda
                 if column == len(self.cube[0]) - 1:
-                    self.cube[3] = [list(x) for z in zip(*self.cube[3])][::-1]#transpose right
+                    self.cube[3] = [list(x) for x in zip(*self.cube[3])]#Transpõe para direita
         else:
             print(f'ERROR - desired column outside of rubiks cube range. Please select a column between 0-{len(self.cube[0]-1)}')
-    def transversal_twist(self, row, direction):
+    def side_twist(self, row, direction):
         if row < len(self.cube):
             if direction == 1:#girar direita
                 self.cube[0][row], self.cube[3][row], self.cube[5][row], self.cube[1][row] = (self.cube[3][row],
@@ -102,13 +106,13 @@ class CuboMagico:
                 print('Error - direction must be 0(right) or 1(left)')
             if direction == 0:#girar direita
                 if row == 0:
-                    self.cube[2] = [list(x) for x in zip(*reversed(self.cube[2]))]#transpose front
+                    self.cube[4] = [list(x) for x in zip(*reversed(self.cube[4]))]#Transpõe para frente
                 elif row == len(self.cube[0]) - 1:
-                    self.cube[4] = [list(x) for x in zip(*reversed(self.cube[4]))] #Transpose back
+                    self.cube[2] = [list(x) for x in zip(*reversed(self.cube[2]))] #Transpõe para trás
             elif direction == 1: #girar esquerda
                 if row == 0:
-                    self.cube[2] = [list(x) for x in zip(*self.cube[2])][::-1] #Transpose front
+                    self.cube[4] = [list(x) for x in zip(*self.cube[4])][::-1] #Transpõe para frente
                 elif row == len(self.cube[0]) - 1:
-                    self.cube[4] = [list(x) for x in zip(*self.cube[4])][::-1] #Transpose back
+                    self.cube[2] = [list(x) for x in zip(*self.cube[2])][::-1] #Transpõe para trás
         else:
             print(f'ERROR - desired row outside of rubiks cube range. Please select a row between 0-{len(self.cube[0] - 1)}')
