@@ -16,9 +16,63 @@ class Cubo:
                     self.cubo[-1].append([])
                 elif len(self.cubo[-1][-1]) == self.n and len(self.cubo[-1]) == self.n and i < len(state) - 1:
                     self.cubo.append([[]])
+                    
+                    
     def reset(self):
         self.cubo = [[[c for x in range(self.n)] for y in range(self.n)] for c in self.cores]
 
+
+    def resolvido(self):
+        for lado in self.cubo:
+            hold = []
+            check = True
+            for row in lado:
+                if len(set(row)) == 1:
+                    hold.append(row[0])
+                else:
+                    check = False
+                    break
+            if check == False:
+                    break
+            if len(set(hold)) > 1:
+                    check = False
+                    break
+        return check
+        
+        def stringfy(self):
+            return ''.join([i for r in self.cubo for s in r for i in s])
+        
+        
+        def embaralhar(self, l_rot = 5, u_rot = 100):
+            moves = randint(l_rot, u_rot)
+            actions = [
+                ('h', 0),
+                ('h', 1),
+                ('v', 0),
+                ('v', 1),
+                ('s', 0),
+                ('s', 1)
+            ]
+            
+            for i in range(moves):
+                a = choice(actions)
+                j = randint(0, self.n - 1)
+                if a[0] == 'h':
+                    self.horizontal_twist(j, a[1])
+                elif a[0] == 'v':
+                    self.vertical_twist(j, a[1])
+                elif a[0] == 's':
+                    self.side_twist(j, a[1])
+            
+            
+    def show(self):
+        espaco = f'{" " * (len(str(self.cubo[0][0])) + 2)}'
+        l1 = '\n'.join(espaco + str(c) for c in self.cubo[0])
+        l2 = '\n'.join('  '.join(str(self.cubo[i][j]) for i in range(1,5)) for j in range(len(self.cubo[0])))
+        l3 = '\n'.join(espaco + str(c) for c in self.cubo[5])
+        print(f'{l1}\n\n{l2}\n\n{l3}')
+            
+            
     def resolvido(self):
         for lado in self.cubo:
             hold = []
