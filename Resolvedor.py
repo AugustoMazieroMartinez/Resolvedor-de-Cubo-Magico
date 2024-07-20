@@ -37,7 +37,7 @@ class IDA_star(object):
             if cubo.resolvido():
                 self.moves.append(a)
                 return True
-            cubo_str = cubo.stringify()
+            cubo_str = cubo.stringfy()
             h_score = self.heuristic[cubo_str] if cubo_str in self.heuristic else self.max_depth
             f_score = g_score + h_score
             if f_score < min_val:

@@ -44,8 +44,8 @@ class Cubo:
                     break
         return check
         
-        def stringify(self):
-            return ''.join([i for r in self.cube for s in r for i in s])
+    def stringfy(self):
+        return ''.join([i for r in self.cubo for s in r for i in s])
         
         
         def embaralhar(self, l_rot = 5, u_rot = 100):
