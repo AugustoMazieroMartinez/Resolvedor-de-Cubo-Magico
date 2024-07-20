@@ -1,6 +1,11 @@
 from random import randint, choice
 class Cubo:
-    def __init__(self, n = 3, cores = ['w', 'o', 'g', 'r', 'b', 'y'], state = None):
+    def __init__(
+        self,
+        n = 3,
+        cores = ['w', 'o', 'g', 'r', 'b', 'y'],
+        state = None
+    ):
         if state is None: 
             self.n = n
             self.cores = cores
@@ -39,8 +44,8 @@ class Cubo:
                     break
         return check
         
-        def stringfy(self):
-            return ''.join([i for r in self.cubo for s in r for i in s])
+        def stringify(self):
+            return ''.join([i for r in self.cube for s in r for i in s])
         
         
         def embaralhar(self, l_rot = 5, u_rot = 100):
