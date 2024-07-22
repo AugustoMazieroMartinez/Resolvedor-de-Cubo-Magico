@@ -57,29 +57,29 @@ class IDA_star(object):
             if status: return status
         return False
     
-    def build_heuristic_db(state, actions, max_moves = 20, heuristic = None):
-        if heuristic is None:
-            heuristic = {state: 0}
-        que = [(state, 0)]
-        node_count = sum([len(actions) ** (x + 1) for x in range(max_moves + 1)])
-        with tqdm(total=node_count, desc='Heuristic DB') as pbar:
-            while True:
-                if not que:
-                    break
-                s, d = que.pop()
-                if d > max_moves:
-                    continue
-                for a in actions:
-                    cubo = Cubo(state=s)
-                    if a[0] == 'h':
-                        cubo.horizontal_twist(a[1], a[2])
-                    elif a[0] == 'v':
-                        cubo.vertical_twist(a[1], a[2])
-                    elif a[0] == 's':
-                        cubo.side_twist(a[1], a[2])
-                    a_str = cubo.stringfy()
-                    if a_str not in heuristic or heuristic[a_str] > d + 1:
-                        heuristic[a_str] = d + 1
-                    que.append((a_str, d+1))
-                    pbar.update(1)
-        return heuristic
+def build_heuristic_db(state, actions, max_moves = 20, heuristic = None):
+    if heuristic is None:
+        heuristic = {state: 0}
+    que = [(state, 0)]
+    node_count = sum([len(actions) ** (x + 1) for x in range(max_moves + 1)])
+    with tqdm(total=node_count, desc='Heuristic DB') as pbar:
+        while True:
+            if not que:
+                break
+            s, d = que.pop()
+            if d > max_moves:
+                continue
+            for a in actions:
+                cubo = Cubo(state=s)
+                if a[0] == 'h':
+                    cubo.horizontal_twist(a[1], a[2])
+                elif a[0] == 'v':
+                    cubo.vertical_twist(a[1], a[2])
+                elif a[0] == 's':
+                    cubo.side_twist(a[1], a[2])
+                a_str = cubo.stringify()
+                if a_str not in heuristic or heuristic[a_str] > d + 1:
+                    heuristic[a_str] = d + 1
+                que.append((a_str, d+1))
+                pbar.update(1)
+    return heuristic
