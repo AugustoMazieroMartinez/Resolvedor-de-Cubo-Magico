@@ -3,23 +3,24 @@ from tqdm import tqdm
 from Cubo import Cubo
 
 class IDA_star(object):
-    def __init__(self, heuristic, max_depth = 20):
+    def __init__(self, heuristic, max_depth=20):
         self.max_depth = max_depth
         self.limite = max_depth
         self.min_limite = None
         self.heuristic = heuristic
         self.moves = []
-        
+
     def run(self, state):
         while True:
             status = self.search(state, 1)
-            if status: return self.moves
+            if status:
+                return self.moves
             self.moves = []
             self.limite = self.min_limite
         return []
-    
+
     def search(self, state, g_score):
-        cubo = Cubo(state = state)
+        cubo = Cubo(state=state)
         if cubo.resolvido():
             return True
         elif len(self.moves) >= self.limite:
@@ -45,7 +46,7 @@ class IDA_star(object):
                 best_action = [(cubo_str, a)]
             elif f_score == min_val:
                 if best_action is None:
-                    best_action =[(cubo_str, a)]
+                    best_action = [(cubo_str, a)]
                 else:
                     best_action.append((cubo_str, a))
         if best_action is not None:
@@ -54,9 +55,10 @@ class IDA_star(object):
             next_action = choice(best_action)
             self.moves.append(next_action[1])
             status = self.search(next_action[0], g_score + min_val)
-            if status: return status
+            if status:
+                return status
         return False
-    
+
 def build_heuristic_db(state, actions, max_moves = 20, heuristic = None):
     if heuristic is None:
         heuristic = {state: 0}

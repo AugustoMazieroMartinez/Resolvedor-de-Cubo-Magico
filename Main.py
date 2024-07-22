@@ -4,7 +4,7 @@ import os.path
 from Cubo import Cubo
 from Resolvedor import IDA_star, build_heuristic_db
 
-MAX_MOVES = 5
+MAX_MOVES = 20
 NEW_HEURISTICS = False
 HEURISTIC_FILE = 'heuristic.json'
 
