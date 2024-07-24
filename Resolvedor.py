@@ -1,6 +1,7 @@
+from collections import deque
 from random import choice
 from tqdm import tqdm
-from Cubo import Cubo
+from Cubo import CuboMagico
 
 class IDA_star(object):
     def __init__(self, heuristic, max_depth=20):
@@ -20,7 +21,7 @@ class IDA_star(object):
         return []
 
     def search(self, state, g_score):
-        cubo = Cubo(state=state)
+        cubo = CuboMagico(state=state)
         if cubo.resolvido():
             return True
         elif len(self.moves) >= self.limite:
@@ -28,7 +29,7 @@ class IDA_star(object):
         min_val = float('inf')
         best_action = None
         for a in [(r, n, d) for r in ['h', 'v', 's'] for d in [0, 1] for n in range(cubo.n)]:
-            cubo = Cubo(state=state)
+            cubo = CuboMagico(state=state)
             if a[0] == 'h':
                 cubo.horizontal_twist(a[1], a[2])
             elif a[0] == 'v':
@@ -72,14 +73,14 @@ def build_heuristic_db(state, actions, max_moves = 20, heuristic = None):
             if d > max_moves:
                 continue
             for a in actions:
-                cubo = Cubo(state=s)
+                cubo = CuboMagico(state=s)
                 if a[0] == 'h':
                     cubo.horizontal_twist(a[1], a[2])
                 elif a[0] == 'v':
                     cubo.vertical_twist(a[1], a[2])
                 elif a[0] == 's':
                     cubo.side_twist(a[1], a[2])
-                a_str = cubo.stringify()
+                a_str = cubo.stringfy()
                 if a_str not in heuristic or heuristic[a_str] > d + 1:
                     heuristic[a_str] = d + 1
                 que.append((a_str, d+1))
