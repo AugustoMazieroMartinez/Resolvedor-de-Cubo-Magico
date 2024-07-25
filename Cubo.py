@@ -99,13 +99,13 @@ class CuboMagico:
 
     def horizontal_twist(self, row, direction):
         if row < len(self.cubo[0]):
-            if direction == 0: #Twist left
+            if direction == 0: 
                 self.cubo[1][row], self.cubo[2][row], self.cubo[3][row], self.cubo[4][row] = (self.cubo[2][row],
                                                                                               self.cubo[3][row],
                                                                                               self.cubo[4][row],
                                                                                               self.cubo[1][row])
 
-            elif direction == 1: #Twist right
+            elif direction == 1: 
                 self.cubo[1][row], self.cubo[2][row], self.cubo[3][row], self.cubo[4][row] = (self.cubo[4][row],
                                                                                               self.cubo[1][row],
                                                                                               self.cubo[2][row],
@@ -113,13 +113,13 @@ class CuboMagico:
             else:
                 print('ERRO - Direção deve ser 0(esquerda) ou 1(direita)')
                 return
-            #Rotating connected face
-            if direction == 0: #Twist left
+
+            if direction == 0: 
                 if row == 0:
                     self.cubo[0] = [list(x) for x in zip(*reversed(self.cubo[0]))] #Transpose top
                 elif row == len(self.cubo[0]) - 1:
                     self.cubo[5] = [list(x) for x in zip(*reversed(self.cubo[5]))] #Transpose bottom
-            elif direction == 1: #Twist right
+            elif direction == 1:
                 if row == 0:
                     self.cubo[0] = [list(x) for x in zip(*self.cubo[0])][::-1] #Transpose top
                 elif row == len(self.cubo[0]) - 1:
@@ -144,7 +144,7 @@ class CuboMagico:
                 else:
                     print('ERRO - Direção deve ser 0(cima) ou 1(baixo)')
                     return
-            #Rotating connected face
+    
             if direction == 0:
                 if column == 0:
                     self.cubo[1] = [list(x) for x in zip(*self.cubo[1])][::-1] #Transpose left
